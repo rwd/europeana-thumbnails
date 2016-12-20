@@ -1,0 +1,18 @@
+# Ignore dotenv config files
+/.env
+/.env.*
+
+# Ignore CF manifest
+/manifest.yml
+
+# Ignore New Relic config
+/config/newrelic.yml
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore log files
+/log
+
+# Ignore IDE files
+/.idea

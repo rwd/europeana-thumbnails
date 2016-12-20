@@ -1,0 +1,9 @@
+# Ignore dotenv config files
+/.env
+/.env.*
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore log files
+/log
