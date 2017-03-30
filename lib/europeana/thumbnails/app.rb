@@ -10,6 +10,10 @@ module Europeana
     class App < Sinatra::Base
       set :public_folder, 'public'
 
+      def respond_with_redirects?
+        ENV['RESPOND_WITH_REDIRECTS'].present?
+      end
+
       get '/' do
         uri = params['uri']
         type = if params.key?('type') && %w(SOUND VIDEO TEXT 3D IMAGE).include?(params['type'].upcase)
@@ -19,27 +23,32 @@ module Europeana
                end
         size = params['size'] || 'FULL_DOC'
 
-        generic_path = "/images/item-#{type}-large.gif"
-        generic_filepath = File.expand_path("../../../../public#{generic_path}", __FILE__)
-
         resource_size = size =~ /w400/i ? 'LARGE' : 'MEDIUM'
         resource_path = Digest::MD5.hexdigest(uri) + '-' + resource_size
         resource_url = ENV['AMAZON_S3_URL'] + resource_path
-        # puts resource_url
 
         uri = URI.parse(resource_url)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
-        head_response = http.head(uri.path)
 
-        if (400..500).cover?(head_response.code.to_i)
-          send_file generic_filepath, type: 'image/gif'
-          # redirect to(generic_path), 302
+        response = respond_with_redirects? ? http.head(uri.path) : http.get(uri.path)
+
+        if (400..500).cover?(response.code.to_i)
+          if respond_with_redirects?
+            redirect to(generic_path), 302
+          else
+            generic_path = "/images/item-#{type}-large.gif"
+            generic_filepath = File.expand_path("../../../../public#{generic_path}", __FILE__)
+            send_file generic_filepath, type: 'image/gif'
+          end
         else
-          # headers head_response.header.to_hash.merge('Content-Type' => 'image/jpeg')
-          # status head_response.code
-          # body response.body
-          redirect to(resource_url), 302
+          if respond_with_redirects?
+            redirect to(resource_url), 302
+          else
+            headers response.header.to_hash.merge('Content-Type' => 'image/jpeg')
+            status response.code
+            body response.body
+          end
         end
       end
     end
