@@ -11,7 +11,7 @@ module Europeana
       set :public_folder, 'public'
 
       def respond_with_redirects?
-        ENV['RESPOND_WITH_REDIRECTS'].present?
+        ENV.key?('RESPOND_WITH_REDIRECTS')
       end
 
       get '/' do
