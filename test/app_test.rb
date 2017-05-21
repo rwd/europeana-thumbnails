@@ -5,6 +5,6 @@ class AppTest < Minitest::Test
   include Rack::Test::Methods
 
   def app
-    Europeana::Thumbnails::App
+    Unguis::App
   end
 end

@@ -1,4 +1,4 @@
-# Europeana Thumbnails
+# Unguis
 
 Sinatra app to serve thumbnails for web resources in [Europeana](http://www.europeana.eu/portal)
 

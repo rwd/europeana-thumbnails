@@ -13,4 +13,4 @@ else
   Coveralls.wear! # Submit Coveralls report in CI env
 end
 
-require 'europeana/thumbnails'
+require 'unguis'

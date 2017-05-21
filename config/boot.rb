@@ -7,4 +7,4 @@ Bundler.require(:default, ENV['RACK_ENV'])
 
 Dotenv.load if defined?(Dotenv)
 
-require 'europeana/thumbnails'
+require 'unguis'
