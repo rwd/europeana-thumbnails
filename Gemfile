@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 gem 'aws-sdk', '~> 2'
@@ -15,7 +16,7 @@ end
 
 group :development, :test do
   gem 'dotenv'
-  gem 'rubocop', '0.39.0', require: false # only update when Hound does
+  gem 'rubocop', require: false
 end
 
 group :development do
