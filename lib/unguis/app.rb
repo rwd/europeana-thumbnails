@@ -43,12 +43,10 @@ module Unguis
       else
         begin
           s3_response = s3_object.get
-          headers({
-            'Content-Length' => s3_response.content_length,
-            'Content-Type' => 'image/jpeg',
-            'ETag' => s3_response.etag,
-            'Last-Modified' => s3_response.last_modified.httpdate
-          })
+          headers('Content-Length' => s3_response.content_length,
+                  'Content-Type' => 'image/jpeg',
+                  'ETag' => s3_response.etag,
+                  'Last-Modified' => s3_response.last_modified.httpdate)
           status 200
           body s3_response.body
         rescue Aws::S3::Errors::NoSuchKey
